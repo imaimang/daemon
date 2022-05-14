@@ -1,7 +1,8 @@
 package main
 
 type Config struct {
-	Servers []*Server
+	Servers     []*Server
+	WaitAddress []string
 }
 
 type Server struct {

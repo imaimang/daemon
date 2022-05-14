@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -10,6 +11,8 @@ import (
 	"time"
 
 	"github.com/BurntSushi/toml"
+	"github.com/imaimang/mgo/net"
+	"github.com/imaimang/mgo/zip"
 )
 
 var config = new(Config)
@@ -20,6 +23,12 @@ func main() {
 	if err == nil {
 		_, err = toml.Decode(string(buffer), config)
 		if err == nil {
+			fmt.Println(config.WaitAddress)
+			if len(config.WaitAddress) > 0 {
+				net.WaitAddresses(func(address string, isSuccess bool) {
+					log.Println("address available", isSuccess)
+				}, config.WaitAddress...)
+			}
 			for _, server := range config.Servers {
 				go run(server)
 			}
@@ -46,7 +55,7 @@ func checkUpdate() {
 			if err == nil {
 				switch strings.ToLower(ext) {
 				case ".zip":
-					err := unzip(filePath, server.Directory)
+					err := zip.Unzip(filePath, server.Directory)
 					if err == nil {
 						os.Remove(filePath)
 					}
