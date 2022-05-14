@@ -1,0 +1,27 @@
+# config example
+# 
+#
+# Directory: application work dic
+# Exe:application name
+# Environment:system environment  ["PYTHONPATH=/lib/python","CUDA=/lib/cuda"]
+# FaildSecond:when server run faild,restart second time
+# Args: server params
+# UpdateFileName: when damon detecte zip file,automatic update
+#
+# [[Servers]]
+# Directory = "/public/node"
+# Exe = "node"
+# Environment = ""
+#
+# [[Servers]]
+# Directory = "/public/server"
+# Exe = "server"
+# Environment = ""
+
+[[Servers]]
+Directory = "/home/swk/code/server"
+Exe = "server"
+Environment = ["PYTHONPATH=/lib/python","CUDA=/lib/cuda"]
+FaildSecond = 5
+Args = ["swk=1","swk=2"]
+UpdateFileName = "update.zip"
