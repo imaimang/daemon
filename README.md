@@ -3,6 +3,8 @@ daemon是一个守护进程,可使用配置文件配置想要开启的程序,并
 
 # 配置信息
 
+WaitAddress: 需要damon等待地址可用才继续运行，例如可等待数据库准备完毕
+
 Directory: 需要监控的程序运行目录  
 Exe: 需要监控程序启动文件名称  
 Environment: 需要执行的环境变量  ["PYTHONPATH=/lib/python","CUDA=/lib/cuda"]  
@@ -13,6 +15,8 @@ UpdateFileName: 程序更新压缩包，支持zip、tar格式，daemon检测到�
 
 
 ``` toml
+
+WaitAddress = ["localhost:3306","localhost:3306"]
 
 [[Servers]]
 Directory = "/home/server"
