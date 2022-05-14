@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -23,7 +22,6 @@ func main() {
 	if err == nil {
 		_, err = toml.Decode(string(buffer), config)
 		if err == nil {
-			fmt.Println(config.WaitAddress)
 			if len(config.WaitAddress) > 0 {
 				net.WaitAddresses(func(address string, isSuccess bool) {
 					log.Println("address available", isSuccess)
@@ -33,6 +31,7 @@ func main() {
 				go run(server)
 			}
 			timerCheckUpdate = time.AfterFunc(1*time.Second, checkUpdate)
+
 		}
 	}
 	if err != nil {
@@ -70,13 +69,12 @@ func checkUpdate() {
 func run(server *Server) {
 	log.Println("run server", server.Directory, server.Exe)
 	for {
-		if server.Directory[len(server.Directory)-1] != '/' {
+		if server.Directory != "" && server.Directory[len(server.Directory)-1] != '/' {
 			server.Directory += "/"
 		}
 		cmd := exec.Command(server.Directory+server.Exe, server.Args...)
 		cmd.Dir = server.Directory
 		cmd.Env = server.Environment
-		cmd.Stderr = os.Stderr
 		err := cmd.Run()
 		if err != nil {
 			log.Println(server.Directory, server.Exe, err)
