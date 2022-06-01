@@ -74,7 +74,10 @@ func run(server *Server) {
 		}
 		cmd := exec.Command(server.Directory+server.Exe, server.Args...)
 		cmd.Dir = server.Directory
-		cmd.Env = server.Environment
+
+		cmd.Env = append(os.Environ(), server.Environment...)
+		cmd.Stderr = os.Stderr
+		//cmd.Stdout = os.Stdout
 		err := cmd.Run()
 		if err != nil {
 			log.Println(server.Directory, server.Exe, err)
